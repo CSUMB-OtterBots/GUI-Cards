@@ -97,20 +97,23 @@ class GUICard
    static void loadCardIcons()
    {
       //check if array is loaded... if not load it
-      // if....
-      String fileExt = ".gif";
-      int index = 0;
-      
-      for (int i = 0; i < 4; i++)
+      if (!iconsLoaded)
       {
-         for (int j = 0; j < 14; j++)
+         String fileExt = ".gif";
+         int index = 0;
+         
+         for (int i = 0; i < 4; i++)
          {
-            iconCards[j][i] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
-            System.out.println(turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
-            index++;
+            for (int j = 0; j < 14; j++)
+            {
+               iconCards[j][i] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
+               System.out.println(turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
+               index++;
+            }
          }
+         iconBack = new ImageIcon("images/BK.gif"); //Back of card (Last)
+         iconsLoaded = true;
       }
-      iconBack = new ImageIcon("images/BK.gif"); //Back of card (Last)
    }
 }
 
