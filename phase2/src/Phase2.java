@@ -105,12 +105,12 @@ class GUICard
       {
          for (int j = 0; j < 14; j++)
          {
-            icon[index] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
+            iconCards[j][i] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
             System.out.println(turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
             index++;
          }
       }
-      icon[index] = new ImageIcon("BK.gif"); //Back of card (Last)
+      iconBack = new ImageIcon("images/BK.gif"); //Back of card (Last)
    }
 }
 
