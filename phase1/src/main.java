@@ -12,6 +12,7 @@ public class main
    static final int NUM_CARD_IMAGES = 57; //Every typical card and back of card
    static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
    
+   // helper function to load all the icons into an array
    static void loadCardIcons()
    {
       String fileExt = ".gif";
@@ -29,6 +30,7 @@ public class main
       icon[index] = new ImageIcon("BK.gif"); //Back of card (Last)
    }
    
+   // helper function to resolve iterators into the value part of the filename
    static String turnIntIntoCardValue(int k) // Helper Method
    {
       String[] cardValues =
@@ -36,12 +38,15 @@ public class main
       return cardValues[k];
    }
    
+   // helper function to resulve iterators into the suit part of the filename
    static String turnIntIntoCardSuit(int j) //Helper Method
    {
       String[] cardSuits = {"C", "D", "H", "S"};
       return cardSuits[j];
    }
 
+   // main, simple method that loads all the cards and displays them 
+   // using swing.
    public static void main(String[] args)
    {
       loadCardIcons();
