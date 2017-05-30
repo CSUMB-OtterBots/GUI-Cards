@@ -17,29 +17,30 @@ public class main
    {
       String fileExt = ".gif";
       int index = 0;
+      int numSuits = 4;
+      int numCardsPerSuit = 14;
       
-      for (int i = 0; i < 4; i++)
+      for (int i = 0; i < numSuits; i++)
       {
-         for (int j = 0; j < 14; j++)
+         for (int j = 0; j < numCardsPerSuit; j++)
          {
             icon[index] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
-            System.out.println(turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
             index++;
          }
       }
-      icon[index] = new ImageIcon("BK.gif"); //Back of card (Last)
+      icon[index] = new ImageIcon("images/BK.gif"); //Back of card (Last)
    }
    
    // helper function to resolve iterators into the value part of the filename
-   static String turnIntIntoCardValue(int k) // Helper Method
+   static String turnIntIntoCardValue(int k)
    {
       String[] cardValues =
       { "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "X"};
       return cardValues[k];
    }
    
-   // helper function to resulve iterators into the suit part of the filename
-   static String turnIntIntoCardSuit(int j) //Helper Method
+   // helper function to resolve iterators into the suit part of the filename
+   static String turnIntIntoCardSuit(int j)
    {
       String[] cardSuits = {"C", "D", "H", "S"};
       return cardSuits[j];
