@@ -521,6 +521,25 @@ class Deck
       topCard = cards.length - 1;
    }
 
+   public boolean addCard(Card card)
+   {
+      for (int i = 0; i < cards.length; i++) //Check deck for another copy of card
+      {
+         if (card == cards[i])
+         {
+            return false;
+         }
+      }
+      
+      if (topCard != cards.length - 1) //Check if too many cards in deck
+      {
+         cards[topCard + 1] = card;
+         topCard++;
+         return true;
+      }
+      return false;
+   }
+   
    /*
     * This method shuffles the decks.
     */
