@@ -21,16 +21,17 @@ public class Phase2
    
    static Card generateRandomCard()
    {
+      Random random = new Random();
       Card.Suit suit;
       char val;
 
       int suitSelector, valSelector;
 
-      suitSelector = (int) (Math.random() * 4);
-      valSelector = (int) (Math.random() * 13);
+      suitSelector = random.nextInt(4);
+      valSelector = random.nextInt(14);
 
-      suit = turnIntIntoSuit(suitSelector);
-      val = turnIntIntoVal(valSelector);
+      suit = Card.Suit.values()[suitSelector];
+      val =  Card.values[valSelector];
 
       return new Card(val, suit);
    } 
