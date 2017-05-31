@@ -217,6 +217,39 @@ class Card
          errorFlag = true;
       }
    }
+   
+   static void arraySort(Card[] cards, int arraySize) //Utilizes bubble sort
+   {
+      int numSwaps;
+      
+      do
+      {
+         numSwaps = 0;
+         for (int i = 1; i < arraySize; i++)
+         {
+            if (rank(cards[i - 1].getValue()) > rank(cards[i].getValue()))
+            {
+               Card temp = cards[i - 1]; // Store first card
+               cards[i - 1] = cards[i]; // Set first card equal to second
+               cards[i] = temp; // Set second card equal to original value of the first card
+               numSwaps++;
+            }
+         }
+      }
+      while (numSwaps != 0);  //Once there are no swaps in for loop the array is sorted
+   }
+   
+   private static int rank(char value) // Helper method for arraySort
+   {
+      for (int i = 0; i < valueRanks.length; i++)
+      {
+         if (value == valueRanks[i])
+         {
+            return i;
+         }
+      }
+      return -1;
+   }
 
    // Simple Accessor for value
    public char getValue()
