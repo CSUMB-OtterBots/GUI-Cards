@@ -529,7 +529,8 @@ class Deck
       
       for (int i = 0; i < cards.length; i++) //Check deck for another copy of card
       {
-         if (card == cards[i])
+         if (cards[i].getSuit() == card.getSuit() &&
+               cards[i].getValue() == card.getValue() )
          {
             copies++;
          }
