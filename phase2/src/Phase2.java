@@ -168,7 +168,7 @@ class Card
    }
 
    public static char[] values =
-   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
+   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };
    public static char[] valueRanks = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A', 'X'};
    private char value;
    private Suit suit;
@@ -612,7 +612,7 @@ class Deck
 
       if (masterPack == null)
       {
-         masterPack = new Card[52];
+         masterPack = new Card[56];
          for (int i = 0; i < Card.Suit.values().length; i++)
          {
             for (int j = 0; j < Card.values.length; j++)
