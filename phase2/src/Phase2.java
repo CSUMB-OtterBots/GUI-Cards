@@ -10,8 +10,6 @@ import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import Card.Suit;
-
 public class Phase2
 {
    static int NUM_CARDS_PER_HAND = 7;
@@ -104,7 +102,6 @@ class GUICard
       if (!iconsLoaded)
       {
          String fileExt = ".gif";
-         int index = 0;
          
          for (int i = 0; i < 4; i++)
          {
@@ -112,7 +109,6 @@ class GUICard
             {
                iconCards[j][i] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
                System.out.println(turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
-               index++;
             }
          }
          iconBack = new ImageIcon("images/BK.gif"); //Back of card (Last)
