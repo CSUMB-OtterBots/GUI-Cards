@@ -63,9 +63,13 @@ public class Phase2
       myCardTable.pnlHumanHand.add(lblHumanHand);
       
       // and two random cards in the play region (simulating a computer/hum ply)
+      GUICard.loadCardIcons();
       Card cardA, cardB;
       cardA = generateRandomCard();
       cardB = generateRandomCard();
+      playedCardLabels[0] = new JLabel(GUICard.getIcon(cardA));
+      playedCardLabels[1] = new JLabel(GUICard.getIcon(cardB));
+      
       
 
       // show everything to the user
@@ -154,7 +158,15 @@ class GUICard
    }
    static private int valueAsInt(Card card)
    {
-      return java.util.Arrays.asList(Card.values).indexOf(card.getValue());
+      char val = card.getValue();
+      for (int i = 0; i < Card.values.length; i++)
+      {
+         if (val == Card.values[i] )
+         {
+            return i;
+         }
+      }
+      return -1;
    }
    
    static private int suitAsInt(Card card)
@@ -164,7 +176,10 @@ class GUICard
    }
    static public Icon getIcon(Card card)
    {
-      return iconCards[valueAsInt(card)][suitAsInt(card)];
+      int val, suit;
+      val = valueAsInt(card);
+      suit = suitAsInt(card);
+      return iconCards[val][suit];
    }
    
    static public Icon getBackCardIcon()
