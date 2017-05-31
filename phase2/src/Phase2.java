@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Random;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
 
 public class Phase2
 {
@@ -38,10 +38,7 @@ public class Phase2
    
    
    public static void main(String[] args)
-   {
-      int k;
-      Icon tempIcon;
-      
+   {      
       // establish main frame in which program will run
       CardTable myCardTable 
          = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
@@ -54,13 +51,11 @@ public class Phase2
 
       // CREATE LABELS ----------------------------------------------------
       JLabel lblComputerHand = new JLabel("Computer Hand");
-      JLabel lblPlayArea = new JLabel("Play Area");
-      JLabel lblHumanHand = new JLabel("Computer Hand");
+      JLabel lblHumanHand = new JLabel("Human Hand");
   
       // ADD LABELS TO PANELS -----------------------------------------
-      myCardTable.pnlComputerHand.add(lblComputerHand);
-      myCardTable.pnlPlayArea.add(lblPlayArea);
-      myCardTable.pnlHumanHand.add(lblHumanHand);
+      myCardTable.pnlPlayArea.add(lblComputerHand);
+      myCardTable.pnlPlayArea.add(lblHumanHand);
       
       // and two random cards in the play region (simulating a computer/hum ply)
       Card cardA, cardB;
@@ -91,16 +86,33 @@ class CardTable extends JFrame
    
    CardTable(String title, int numCardsPerHand, int numPlayers)
    {
-      setLayout(new GridLayout(3,0));
+      this.numPlayers = numPlayers;
+      this.numCardsPerHand = numCardsPerHand;
+      BorderLayout layout = new BorderLayout();
+      setLayout(layout);
       
       pnlComputerHand = new JPanel();
-      add(pnlComputerHand);
+      setPanelVars(pnlComputerHand, "Computer Hand");
+      add(pnlComputerHand, BorderLayout.NORTH);
       
       pnlPlayArea = new JPanel();
-      add(pnlPlayArea);
+      setPanelVars(pnlPlayArea, "Play Area");
+      add(pnlPlayArea, BorderLayout.CENTER);
       
       pnlHumanHand = new JPanel();
-      add(pnlHumanHand);
+      setPanelVars(pnlHumanHand, "Human Hand");
+      add(pnlHumanHand, BorderLayout.SOUTH);
+   }
+   private void setPanelVars(JPanel panel, String name)
+   {
+      TitledBorder border = new TitledBorder(name);
+      border.setTitleJustification(TitledBorder.LEFT);
+      border.setTitlePosition(TitledBorder.TOP);
+      
+      panel.setBorder(border);
+     // panel.setMinimumHeight( 200);
+      panel.setEnabled(true);
+      panel.setVisible(true);
    }
 }
 
