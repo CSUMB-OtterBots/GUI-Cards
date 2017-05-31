@@ -67,8 +67,11 @@ public class Phase2
       Card cardA, cardB;
       cardA = generateRandomCard();
       cardB = generateRandomCard();
-      playedCardLabels[0] = new JLabel(GUICard.getIcon(cardA));
-      playedCardLabels[1] = new JLabel(GUICard.getIcon(cardB));
+      JLabel labA = new JLabel(GUICard.getIcon(cardA));
+      JLabel labB = new JLabel(GUICard.getIcon(cardB));
+      
+      myCardTable.pnlPlayArea.add(labA);
+      myCardTable.pnlPlayArea.add(labB);
       
       
 
