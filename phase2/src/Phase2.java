@@ -54,8 +54,6 @@ public class Phase2
       JLabel lblComputerHand = new JLabel("Computer Hand", JLabel.CENTER);
       JLabel lblHumanHand = new JLabel("Human Hand", JLabel.CENTER);
 
-
-
       // and two random cards in the play region (simulating a computer/hum ply)
       Card cardA, cardB;
       cardA = generateRandomCard();
@@ -69,7 +67,7 @@ public class Phase2
       // ADD LABELS TO PANELS -----------------------------------------
       myCardTable.pnlPlayArea.add(lblComputerHand);
       myCardTable.pnlPlayArea.add(lblHumanHand);
-      
+
       // Deal Cards to "Hands"
       dealHands();
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
@@ -80,18 +78,18 @@ public class Phase2
       // show everything to the user
       myCardTable.setVisible(true);
    }
-   
+
    static void dealHands()
    {
-      for (int i = 0; i< NUM_CARDS_PER_HAND; i++)
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
          JLabel lab;
-         Card   nextCard;
-         
+         Card nextCard;
+
          nextCard = myDeck.dealCard();
          lab = new JLabel(GUICard.getIcon(nextCard));
          // for now we will cheat and just put the back of the card
-         //computerLabels[i] = lab;
+         // computerLabels[i] = lab;
          computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
          nextCard = myDeck.dealCard();
          lab = new JLabel(GUICard.getIcon(nextCard));
@@ -118,15 +116,15 @@ class CardTable extends JFrame
       BorderLayout layout = new BorderLayout();
       setLayout(layout);
 
-      pnlComputerHand = new JPanel(new GridLayout(1,numCardsPerHand));
+      pnlComputerHand = new JPanel(new GridLayout(1, numCardsPerHand));
       setPanelVars(pnlComputerHand, "Computer Hand");
       add(pnlComputerHand, BorderLayout.NORTH);
 
-      pnlPlayArea = new JPanel(new GridLayout(2,2));
+      pnlPlayArea = new JPanel(new GridLayout(2, 2));
       setPanelVars(pnlPlayArea, "Play Area");
       add(pnlPlayArea, BorderLayout.CENTER);
 
-      pnlHumanHand = new JPanel(new GridLayout(1,numCardsPerHand));
+      pnlHumanHand = new JPanel(new GridLayout(1, numCardsPerHand));
       setPanelVars(pnlHumanHand, "Human Hand");
       add(pnlHumanHand, BorderLayout.SOUTH);
    }
@@ -159,7 +157,7 @@ class GUICard
       if (k >= 0 && k <= 13)
       {
          returnValue = cardValues[k];
-      } 
+      }
       else
       {
          System.out.println("returning default value A");
@@ -171,11 +169,12 @@ class GUICard
    static String turnIntIntoCardSuit(int j) // Helper Method
    {
       String returnSuit = null;
-      String[] cardSuits = { "C", "D", "H", "S" };
+      String[] cardSuits =
+      { "C", "D", "H", "S" };
       if (j >= 0 && j <= 3)
       {
          returnSuit = cardSuits[j];
-      } 
+      }
       else
       {
          System.out.println("returning default suit C");
@@ -295,7 +294,8 @@ class Card
       if (goodCard)
       {
          errorFlag = false;
-      } else
+      }
+      else
       {
          errorFlag = true;
       }
@@ -365,7 +365,8 @@ class Card
          value = newValue;
          suit = newSuit;
          errorFlag = false;
-      } else
+      }
+      else
       {
          errorFlag = true;
          suit = newSuit;
@@ -517,7 +518,8 @@ class Hand
       {
          // Creates illegal card
          return new Card('X', Card.Suit.spades);
-      } else
+      }
+      else
       {
          return myCards[k];
       }
@@ -695,7 +697,8 @@ class Deck
       {
          retCard = cards[topCard];
          topCard--;
-      } else
+      }
+      else
       {
          retCard = new Card('z', Card.Suit.clubs); // 'z' forces a card with
          // errorFlag set.
@@ -715,7 +718,8 @@ class Deck
          badCard.set('z', Card.Suit.clubs); // this will receive an error flag
          // because of "z"
          return badCard;
-      } else
+      }
+      else
       {
          return cards[index];
       }
