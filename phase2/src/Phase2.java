@@ -544,6 +544,7 @@ class Deck
       }
       return false;
    }
+
    
    public boolean removeCard(Card card)
    {
@@ -558,8 +559,8 @@ class Deck
          }
       }
       return false;
-   }
-   
+   }   
+
    /*
     * This method shuffles the decks.
     */
@@ -581,6 +582,15 @@ class Deck
    public int topCardAccessor()
    {
       return topCard;
+   }
+   
+   public boolean removeCard(Card card)
+   {
+      int index;
+      for (int i = 0; i < cards.length; i++)
+      {
+         
+      }
    }
 
    /*
@@ -644,11 +654,4 @@ class Deck
       }
    }
 }
-
-
-
-
-
-
-
 
