@@ -448,9 +448,10 @@ class Hand
  */
 class Deck
 {
+   public final int NUM_DECKS = 6;
    public final int DECK_SIZE = 56; // the size of a deck in this game
-   public final int MAX_CARDS = 6 * DECK_SIZE; // allow a maximum of six packs
-   // (6 * 52 cards)
+   public final int MAX_CARDS = NUM_DECKS * DECK_SIZE; // allow a maximum of six packs
+   // (6 * 56 cards)
    private static Card[] masterPack;
    private Card[] cards;
    private int topCard;
@@ -523,18 +524,22 @@ class Deck
 
    public boolean addCard(Card card)
    {
+      int copies = 0;
+      int length = 0;
+      
       for (int i = 0; i < cards.length; i++) //Check deck for another copy of card
       {
          if (card == cards[i])
          {
-            return false;
+            copies++;
          }
       }
       
-      if (topCard != cards.length - 1) //Check if too many cards in deck
+      if (copies < NUM_DECKS ) //Check if too many cards in deck
       {
-         cards[topCard + 1] = card;
-         topCard++;
+         length = cards.length;
+         cards[length] = card;
+         topCard = length;
          return true;
       }
       return false;
