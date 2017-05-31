@@ -85,15 +85,31 @@ class GUICard
   
    static String turnIntIntoCardValue(int k) // Helper Method
    {
+      String returnValue = null;
       String[] cardValues =
       { "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "X"};
-      return cardValues[k];
+      if(k >=0 && k <= 13)
+      {
+         returnValue = cardValues[k];
+      }else{
+         System.out.println("returning default value A");
+         return cardValues[0];//returns default value "A".
+      }
+      return returnValue; 
    }
    
    static String turnIntIntoCardSuit(int j) //Helper Method
    {
+      String returnSuit = null;
       String[] cardSuits = {"C", "D", "H", "S"};
-      return cardSuits[j];
+      if(j >=0 && j <= 3)
+      {
+         returnSuit = cardSuits[j];
+      }else{
+         System.out.println("returning default suit C");
+         return cardSuits[0]; //returns default value "C"
+      }
+      return returnSuit;
    }
    
    static void loadCardIcons()
