@@ -9,6 +9,9 @@ import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import java.awt.GridLayout;
 
 public class Phase2
 {
@@ -46,16 +49,13 @@ public class Phase2
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      // show everything to the user
-      //myCardTable.setVisible(true);
-
       // CREATE LABELS ----------------------------------------------------
       JLabel lblComputerHand = new JLabel("Computer Hand");
       JLabel lblHumanHand = new JLabel("Human Hand");
   
       // ADD LABELS TO PANELS -----------------------------------------
-      myCardTable.pnlPlayArea.add(lblComputerHand);
-      myCardTable.pnlPlayArea.add(lblHumanHand);
+      //myCardTable.pnlPlayArea.add(lblComputerHand);
+      //myCardTable.pnlPlayArea.add(lblHumanHand);
       
       // and two random cards in the play region (simulating a computer/hum ply)
       Card cardA, cardB;
@@ -63,7 +63,7 @@ public class Phase2
       cardB = generateRandomCard();
       JLabel labA = new JLabel(GUICard.getIcon(cardA));
       JLabel labB = new JLabel(GUICard.getIcon(cardB));
-      
+
       myCardTable.pnlPlayArea.add(labA);
       myCardTable.pnlPlayArea.add(labB);
       
@@ -81,6 +81,7 @@ class CardTable extends JFrame
    
    private int numCardsPerHand;
    private int numPlayers;
+   
 
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
@@ -88,6 +89,8 @@ class CardTable extends JFrame
    {
       this.numPlayers = numPlayers;
       this.numCardsPerHand = numCardsPerHand;
+      
+      
       BorderLayout layout = new BorderLayout();
       setLayout(layout);
       
