@@ -545,6 +545,11 @@ class Deck
       return false;
    }
  
+   // simple method to  get the number of cards remaining in the deck
+   public int getNumCards()
+   {
+      return cards.length;
+   }
 
    /*
     * This method shuffles the decks.
