@@ -550,6 +550,11 @@ class Deck
    {
       return cards.length;
    }
+   
+   public void sort()
+   {
+      Card.arraySort(cards, cards.length);
+   }
 
    /*
     * This method shuffles the decks.
