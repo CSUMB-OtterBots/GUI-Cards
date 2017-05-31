@@ -151,7 +151,6 @@ class GUICard
             for (int j = 0; j < 14; j++)
             {
                iconCards[j][i] = new ImageIcon("images/" + turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
-               System.out.println(turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) + fileExt);
             }
          }
          iconBack = new ImageIcon("images/BK.gif"); //Back of card (Last)
