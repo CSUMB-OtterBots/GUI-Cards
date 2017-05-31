@@ -448,7 +448,7 @@ class Hand
  */
 class Deck
 {
-   public final int DECK_SIZE = 52; // the size of a deck in this game
+   public final int DECK_SIZE = 56; // the size of a deck in this game
    public final int MAX_CARDS = 6 * DECK_SIZE; // allow a maximum of six packs
    // (6 * 52 cards)
    private static Card[] masterPack;
