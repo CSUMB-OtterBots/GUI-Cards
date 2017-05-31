@@ -130,6 +130,11 @@ class GUICard
       return iconCards[valueAsInt(card)][suitAsInt(card)];
    }
    
+   static public Icon getBackCardIcon()
+   {
+      return iconBack;
+   }
+   
 }
 
 
