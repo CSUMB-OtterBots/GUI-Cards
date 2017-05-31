@@ -346,7 +346,7 @@ class Hand
    
    public void sort()
    {
-      Card.arraySort(myCards, MAX_CARDS);
+      Card.arraySort(myCards, numCards);
    }
    
    public void resetHand()
