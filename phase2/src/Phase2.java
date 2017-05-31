@@ -19,6 +19,23 @@ public class Phase2
    static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS]; 
    static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS]; 
    
+   static Card generateRandomCard()
+   {
+      Card.Suit suit;
+      char val;
+
+      int suitSelector, valSelector;
+
+      suitSelector = (int) (Math.random() * 4);
+      valSelector = (int) (Math.random() * 13);
+
+      suit = turnIntIntoSuit(suitSelector);
+      val = turnIntIntoVal(valSelector);
+
+      return new Card(val, suit);
+   } 
+   
+   
    public static void main(String[] args)
    {
       int k;
