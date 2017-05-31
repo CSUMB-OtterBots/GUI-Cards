@@ -343,6 +343,12 @@ class Hand
    /*
     * This method clears the hand (removes all cards)
     */
+   
+   public void sort()
+   {
+      Card.arraySort(myCards, MAX_CARDS);
+   }
+   
    public void resetHand()
    {
       for (int i = 0; i < numCards; i++)
@@ -372,20 +378,20 @@ class Hand
     * This method plays the top card from the hand. It removes references to the
     * last Card in the array, and returns that object.
     */
-   public Card playCard()
+   public Card playCard(int index) //Updated to take index parameter
    {
       Card retCard;
       if (numCards > 0)
       {
-         retCard = myCards[numCards - 1];
-         myCards[numCards - 1] = null;
+         retCard = myCards[index];
+         myCards[index] = null;
          numCards--;
       }
+      
       else
       {
          retCard = new Card('Z', Card.Suit.spades); // 'z' ensures bad card
       }
-      
       return retCard;
    }
 
