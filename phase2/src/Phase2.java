@@ -63,7 +63,10 @@ public class Phase2
       myCardTable.pnlHumanHand.add(lblHumanHand);
       
       // and two random cards in the play region (simulating a computer/hum ply)
-      //code goes here ...
+      Card cardA, cardB;
+      cardA = generateRandomCard();
+      cardB = generateRandomCard();
+      
 
       // show everything to the user
       myCardTable.setVisible(true);
