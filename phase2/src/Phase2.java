@@ -169,6 +169,7 @@ class Card
 
    public static char[] values =
    { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
+   public static char[] valueRanks = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A', 'X'};
    private char value;
    private Suit suit;
    private boolean errorFlag;
