@@ -545,6 +545,21 @@ class Deck
       return false;
    }
    
+   public boolean removeCard(Card card)
+   {
+      for (int i = 0; i < cards.length; i++)
+      {
+         if (card == cards[i])
+         {
+            cards[i] = cards[topCard];
+            cards[topCard] = null;
+            topCard--;
+            return true;
+         }
+      }
+      return false;
+   }
+   
    /*
     * This method shuffles the decks.
     */
