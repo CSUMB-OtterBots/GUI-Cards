@@ -553,7 +553,7 @@ class Deck
    
    public void sort()
    {
-      Card.arraySort(cards, cards.length);
+      Card.arraySort(cards, topCard + 1);
    }
 
    /*
