@@ -63,7 +63,6 @@ public class Phase2
       myCardTable.pnlHumanHand.add(lblHumanHand);
       
       // and two random cards in the play region (simulating a computer/hum ply)
-      GUICard.loadCardIcons();
       Card cardA, cardB;
       cardA = generateRandomCard();
       cardB = generateRandomCard();
@@ -179,6 +178,7 @@ class GUICard
    }
    static public Icon getIcon(Card card)
    {
+      GUICard.loadCardIcons();
       int val, suit;
       val = valueAsInt(card);
       suit = suitAsInt(card);
@@ -187,6 +187,7 @@ class GUICard
    
    static public Icon getBackCardIcon()
    {
+      GUICard.loadCardIcons();
       return iconBack;
    }
    
