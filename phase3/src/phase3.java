@@ -18,29 +18,11 @@ public class phase3
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int NUM_PLAYERS = 2;
-   static Deck myDeck = new Deck();
    static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
    static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
-
-   static Card generateRandomCard()
-   {
-      Random random = new Random();
-      Card.Suit suit;
-      char val;
-
-      int suitSelector, valSelector;
-
-      suitSelector = random.nextInt(4);
-      valSelector = random.nextInt(14);
-
-      suit = Card.Suit.values()[suitSelector];
-      val = Card.values[valSelector];
-
-      return new Card(val, suit);
-   }
-
+   
    public static void main(String[] args)
    {
       // establish main frame in which program will run
@@ -53,12 +35,15 @@ public class phase3
             numPacksPerDeck, numJokersPerPack,  
             numUnusedCardsPerPack, unusedCardsPerPack, 
             NUM_PLAYERS, NUM_CARDS_PER_HAND);
+      highCardGame.deal();
+      Hand compHand = highCardGame.getHand(0);
+      Hand humanHand = highCardGame.getHand(1);
+      
       
       CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      myDeck.shuffle();
       
       // CREATE LABELS ----------------------------------------------------
       JLabel lblComputerHand = new JLabel("Computer Hand", JLabel.CENTER);
@@ -66,8 +51,8 @@ public class phase3
 
       // and two random cards in the play region (simulating a computer/hum ply)
       Card cardA, cardB;
-      cardA = generateRandomCard();
-      cardB = generateRandomCard();
+      cardA = compHand.playCard(NUM_CARDS_PER_HAND -1);
+      cardB = humanHand.playCard(NUM_CARDS_PER_HAND -1);
       JLabel labA = new JLabel(GUICard.getIcon(cardA));
       JLabel labB = new JLabel(GUICard.getIcon(cardB));
 
@@ -79,8 +64,8 @@ public class phase3
       myCardTable.pnlPlayArea.add(lblHumanHand);
 
       // Deal Cards to "Hands"
-      dealHands();
-      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
+      prepHandForDisplay(compHand, humanHand);
+      for (int i = 0; i < compHand.getNumCards(); i++)
       {
          myCardTable.pnlComputerHand.add(computerLabels[i]);
          myCardTable.pnlHumanHand.add(humanLabels[i]);
@@ -89,19 +74,26 @@ public class phase3
       myCardTable.setVisible(true);
    }
 
-   static void dealHands()
+   static void prepHandForDisplay(Hand compHand, Hand humanHand)
    {
-      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
+      // clear old labels
+      for (int i = 0; i < compHand.getNumCards(); i++)
+      {
+         computerLabels[i] = null;
+         humanLabels[i] = null;
+      }
+      
+      // add new labels for comp hand
+      for (int i = 0; i < compHand.getNumCards(); i++)
+      {
+         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+      }
+      
+      for (int i = 0; i < humanHand.getNumCards(); i++)
       {
          JLabel lab;
          Card nextCard;
-
-         nextCard = myDeck.dealCard();
-         lab = new JLabel(GUICard.getIcon(nextCard));
-         // for now we will cheat and just put the back of the card
-         // computerLabels[i] = lab;
-         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
-         nextCard = myDeck.dealCard();
+         nextCard = humanHand.inspectCard(i);
          lab = new JLabel(GUICard.getIcon(nextCard));
          humanLabels[i] = lab;
       }
@@ -475,7 +467,7 @@ class Hand
    public Card playCard(int index) // Updated to take index parameter
    {
       Card retCard;
-      if (numCards > 0)
+      if (numCards > index)
       {
          retCard = myCards[index];
          myCards[index] = null;
