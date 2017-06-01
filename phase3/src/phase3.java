@@ -32,10 +32,10 @@ public class phase3 implements ActionListener
    static Card lastComputerCard = null;
    static Card lastHumanCard = null;
    
-   static Card[] winnings = new Card[NUM_CARDS_PER_HAND * 2];
+   static int humanScore = 0;
+   static int compScore = 0;
    
-   static JButton compWon = new JButton("Computer Won");
-   static JButton youWon  = new JButton("You Won!");
+   static Hand winnings = new Hand();
 
    public static void main(String[] args)
    {
@@ -57,9 +57,15 @@ public class phase3 implements ActionListener
       // shuffle and deal into the hands.
       highCardGame.deal();
       
+      // register buttons to play 
+      //compWon
+      
       // set the globals to the human and game hands
       compHand = highCardGame.getHand(0);
       humanHand = highCardGame.getHand(1);
+      
+      compHand.sort();
+      humanHand.sort();
 
       // Deal Cards to "Hands" and do initial display
       prepHandForDisplay();
@@ -85,28 +91,44 @@ public class phase3 implements ActionListener
       }
    }
    
-   static void playCards(Card compCard, Card humanCard)
+   static void playCards(boolean over)
    {
       // CREATE LABELS ----------------------------------------------------
       JLabel lblComputerHand = new JLabel("Computer Hand", JLabel.CENTER);
       JLabel lblHumanHand = new JLabel("Human Hand", JLabel.CENTER);
-      JLabel labA = new JLabel(GUICard.getIcon(compCard));
-      JLabel labB = new JLabel(GUICard.getIcon(humanCard));
-      
+      JLabel compWon = new JLabel("Computer Won", JLabel.CENTER);
+      JLabel youWon = new JLabel("You Won!", JLabel.CENTER);
+      JLabel draw   = new JLabel("Cat's Game!", JLabel.CENTER);
+      JLabel labA = new JLabel(GUICard.getIcon(lastComputerCard));
+      JLabel labB = new JLabel(GUICard.getIcon(lastHumanCard));
+
       // remove all the old stuff.
       myCardTable.pnlPlayArea.removeAll();
       myCardTable.repaint();
 
-      myCardTable.pnlPlayArea.add(labA);
-      if (humanCard != null)
+      if (over)
       {
-         myCardTable.pnlPlayArea.add(labB);
-      }
+         if (humanScore > compScore)
+         {
+            myCardTable.pnlPlayArea.add(youWon);
+         }
+         else if (compScore > humanScore)
+         {
+            myCardTable.pnlPlayArea.add(compWon);
+         }
+         else
+         {
+            myCardTable.pnlPlayArea.add(draw);
+         }
 
-      // ADD LABELS TO PANELS -----------------------------------------
-      myCardTable.pnlPlayArea.add(lblComputerHand);
-      if (humanCard != null)
+      } 
+      else
       {
+         myCardTable.pnlPlayArea.add(labA);
+         myCardTable.pnlPlayArea.add(labB);
+
+         // ADD LABELS TO PANELS -----------------------------------------
+         myCardTable.pnlPlayArea.add(lblComputerHand);
          myCardTable.pnlPlayArea.add(lblHumanHand);
       }
    }
@@ -151,17 +173,57 @@ public class phase3 implements ActionListener
       }
    }
    
-   public void computerFirst()
+   void scoreRound()
    {
+      int comp  = Card.rank(lastComputerCard.getValue());
+      int human = Card.rank(lastHumanCard.getValue());
       
+      // comp won
+      if (comp > human)
+      {
+         compScore++;
+      }
+      // human won
+      if (human > comp)
+      {
+         humanScore++;
+      }
+      // no pts for draw
    }
    
-   public void humanFirst()
+   void computerPlay()
    {
+      int playCard = -1;
+      int lowCard = -1;
+      Card nextCard = null;
       
+      int humRank = Card.rank(lastHumanCard.getValue());
+      
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
+      {
+         nextCard = compHand.inspectCard(i);
+         if (! nextCard.getErrorFlag())
+         {
+            if (lowCard < 0)
+            {
+               lowCard = i;
+            }
+            if (Card.rank(nextCard.getValue()) > humRank)
+            {
+               playCard = i;
+               break;
+            }
+         }
+      }
+      if (playCard < 0)
+      {
+         playCard = lowCard;
+      }
+      lastComputerCard = compHand.playCard(playCard);
+      scoreRound();
    }
 
-   public void refreshScreen()
+   void refreshScreen()
    {
       myCardTable.pnlHumanHand.setVisible(false);
       myCardTable.pnlHumanHand.setVisible(true);
@@ -169,19 +231,19 @@ public class phase3 implements ActionListener
    
    public void actionPerformed(ActionEvent e)
    {
-      Card played = null;
       myCardTable.pnlHumanHand.remove((JButton) e.getSource());
       for (int x = 0; x < NUM_CARDS_PER_HAND; x++)
       {
          if ((JButton) e.getSource() == humanButtons[x])
          {
-            played = humanHand.playCard(x);
+            lastHumanCard = humanHand.playCard(x);
             break;
          }
       }
-      playCards(played, played);
+      computerPlay();
       prepHandForDisplay();
       displayHands();
+      playCards(humanHand.getNumCards() <= 0); // bool returned to end game
       refreshScreen();
    }
 }
@@ -412,7 +474,7 @@ class Card
                                // is sorted
    }
 
-   private static int rank(char value) // Helper method for arraySort
+   public static int rank(char value) // Helper method for arraySort
    {
       for (int i = 0; i < valueRanks.length; i++)
       {
