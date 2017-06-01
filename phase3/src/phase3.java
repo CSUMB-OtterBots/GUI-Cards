@@ -28,6 +28,14 @@ public class phase3 implements ActionListener
    static CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
    static Hand compHand;
    static Hand humanHand;
+   
+   static Card lastComputerCard = null;
+   static Card lastHumanCard = null;
+   
+   static Card[] winnings = new Card[NUM_CARDS_PER_HAND * 2];
+   
+   static JButton compWon = new JButton("Computer Won");
+   static JButton youWon  = new JButton("You Won!");
 
    public static void main(String[] args)
    {
@@ -84,13 +92,23 @@ public class phase3 implements ActionListener
       JLabel lblHumanHand = new JLabel("Human Hand", JLabel.CENTER);
       JLabel labA = new JLabel(GUICard.getIcon(compCard));
       JLabel labB = new JLabel(GUICard.getIcon(humanCard));
+      
+      // remove all the old stuff.
+      myCardTable.pnlPlayArea.removeAll();
+      myCardTable.repaint();
 
       myCardTable.pnlPlayArea.add(labA);
-      myCardTable.pnlPlayArea.add(labB);
+      if (humanCard != null)
+      {
+         myCardTable.pnlPlayArea.add(labB);
+      }
 
       // ADD LABELS TO PANELS -----------------------------------------
       myCardTable.pnlPlayArea.add(lblComputerHand);
-      myCardTable.pnlPlayArea.add(lblHumanHand);
+      if (humanCard != null)
+      {
+         myCardTable.pnlPlayArea.add(lblHumanHand);
+      }
    }
 
    static void prepHandForDisplay()
@@ -119,10 +137,6 @@ public class phase3 implements ActionListener
          {
             computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
          }
-         else
-         {
-            System.out.println("computer hand" + i);
-         }
       }
       
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
@@ -134,11 +148,17 @@ public class phase3 implements ActionListener
             button = new JButton("", GUICard.getIcon(nextCard));
             humanButtons[i] = button;
          }
-         else
-         {
-            System.out.println("human hand" + i);
-         }
       }
+   }
+   
+   public void computerFirst()
+   {
+      
+   }
+   
+   public void humanFirst()
+   {
+      
    }
 
    public void refreshScreen()
@@ -146,17 +166,20 @@ public class phase3 implements ActionListener
       myCardTable.pnlHumanHand.setVisible(false);
       myCardTable.pnlHumanHand.setVisible(true);
    }
+   
    public void actionPerformed(ActionEvent e)
    {
+      Card played = null;
       myCardTable.pnlHumanHand.remove((JButton) e.getSource());
       for (int x = 0; x < NUM_CARDS_PER_HAND; x++)
       {
          if ((JButton) e.getSource() == humanButtons[x])
          {
-            humanHand.playCard(x);
+            played = humanHand.playCard(x);
             break;
          }
       }
+      playCards(played, played);
       prepHandForDisplay();
       displayHands();
       refreshScreen();
@@ -186,7 +209,7 @@ class CardTable extends JFrame
       setPanelVars(pnlComputerHand, "Computer Hand");
       add(pnlComputerHand, BorderLayout.NORTH);
 
-      pnlPlayArea = new JPanel(new GridLayout(2, 2));
+      pnlPlayArea = new JPanel(new GridLayout(3, 3));
       setPanelVars(pnlPlayArea, "Play Area");
       add(pnlPlayArea, BorderLayout.CENTER);
 
