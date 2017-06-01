@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
+   
 public class phase3 implements ActionListener
 {
    static int NUM_CARDS_PER_HAND = 7;
@@ -25,6 +26,8 @@ public class phase3 implements ActionListener
 
    static JButton[] humanButtons = new JButton[NUM_CARDS_PER_HAND];
    static CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+   static Hand compHand;
+   static Hand humanHand;
 
    public static void main(String[] args)
    {
@@ -34,27 +37,46 @@ public class phase3 implements ActionListener
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
 
-      CardGameFramework highCardGame = new CardGameFramework(numPacksPerDeck, numJokersPerPack, numUnusedCardsPerPack,
-            unusedCardsPerPack, NUM_PLAYERS, NUM_CARDS_PER_HAND);
-      highCardGame.deal();
-      Hand compHand = highCardGame.getHand(0);
-      Hand humanHand = highCardGame.getHand(1);
-
+      // set up "table"
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      // Deal Cards to "Hands"
-      prepHandForDisplay(compHand, humanHand);
-      for (int i = 0; i < compHand.getNumCards(); i++)
-      {
-         myCardTable.pnlComputerHand.add(computerLabels[i]);
-         myCardTable.pnlHumanHand.add(humanButtons[i]);
-      }
+      // instantiate game
+      CardGameFramework highCardGame = 
+            new CardGameFramework(numPacksPerDeck, numJokersPerPack, numUnusedCardsPerPack,
+                                  unusedCardsPerPack, NUM_PLAYERS, NUM_CARDS_PER_HAND);
+      // shuffle and deal into the hands.
+      highCardGame.deal();
+      
+      // set the globals to the human and game hands
+      compHand = highCardGame.getHand(0);
+      humanHand = highCardGame.getHand(1);
+
+      // Deal Cards to "Hands" and do initial display
+      prepHandForDisplay();
+      displayHands();
+      
       // show everything to the user
       myCardTable.setVisible(true);
    }
 
+   static void displayHands()
+   {
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
+      {
+         if (computerLabels[i] != null)
+         {
+            myCardTable.pnlComputerHand.add(computerLabels[i]);
+         }
+         if (humanButtons[i] != null)
+         {
+            myCardTable.pnlHumanHand.add(humanButtons[i]);
+            humanButtons[i].addActionListener(new phase3());
+         }
+      }
+   }
+   
    static void playCards(Card compCard, Card humanCard)
    {
       // CREATE LABELS ----------------------------------------------------
@@ -71,50 +93,60 @@ public class phase3 implements ActionListener
       myCardTable.pnlPlayArea.add(lblHumanHand);
    }
 
-   static void prepHandForDisplay(Hand compHand, Hand humanHand)
+   static void prepHandForDisplay()
    {
+      Card nextCard;
       // clear old labels
-      int k; // used to iterate the real cards.
-      for (int i = 0; i < compHand.getNumCards(); i++)
-      {
-         computerLabels[i] = null;
-         humanButtons[i] = null;
-      }
-
-      // add new labels for comp hand
-      k = 0;
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
-         Card nextCard;
-         nextCard = compHand.inspectCard(i);
-         if (nextCard != null)
+         if (computerLabels[i] != null)
          {
-            computerLabels[k] = new JLabel(GUICard.getBackCardIcon());
-            k++;
+            myCardTable.pnlComputerHand.remove(computerLabels[i]);
+            computerLabels[i] = null;
+         }
+         if (humanButtons[i] != null)
+         {
+            myCardTable.pnlHumanHand.remove(humanButtons[i]);
+            humanButtons[i] = null;
          }
       }
 
-      k = 0;// reset for next round
+      // add new labels for comp hand
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
+      {
+         nextCard = compHand.inspectCard(i);
+         if (!nextCard.getErrorFlag())
+         {
+            computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+         }
+      }
+      
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
          JButton button;
-         Card nextCard;
          nextCard = humanHand.inspectCard(i);
-         if (nextCard != null)
-         {
-
+         if (! nextCard.getErrorFlag() )
+         {         
             button = new JButton("", GUICard.getIcon(nextCard));
-            humanButtons[k] = button;
-            k++;
+            humanButtons[i] = button;
          }
       }
    }
 
    public void actionPerformed(ActionEvent e)
    {
-      //int foo;
-      // numClicks++;
-      // text.setText("Button Clicked " + numClicks + " times");
+      myCardTable.pnlHumanHand.remove((JButton) e.getSource());
+      for (int x = 0; x < NUM_CARDS_PER_HAND; x++)
+      {
+         if ((JButton) e.getSource() == humanButtons[x])
+         {
+            humanHand.playCard(x);
+         }
+      }
+      prepHandForDisplay();
+      displayHands();
+      myCardTable.pnlHumanHand.setVisible(false);
+      myCardTable.pnlHumanHand.setVisible(true);
    }
 }
 
@@ -486,7 +518,7 @@ class Hand
    public Card playCard(int index) // Updated to take index parameter
    {
       Card retCard;
-      if (numCards > index)
+      if (numCards > 0)
       {
          retCard = myCards[index];
          myCards[index] = null;
@@ -535,10 +567,10 @@ class Hand
     */
    public Card inspectCard(int k)
    {
-      if (numCards == 0 || k < 0 || k > numCards)
+      if (numCards == 0 || k < 0 || k > numCards || myCards[k] == null)
       {
          // Creates illegal card
-         return new Card('X', Card.Suit.spades);
+         return new Card('Z', Card.Suit.spades);
       }
       else
       {
