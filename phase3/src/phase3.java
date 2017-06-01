@@ -13,8 +13,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.awt.event.*;
 
-public class phase3
+public class phase3 implements ActionListener 
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int NUM_PLAYERS = 2;
@@ -22,6 +23,9 @@ public class phase3
    static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
    static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
+   
+   static JButton[] humanButtons = new JButton[NUM_CARDS_PER_HAND];
+   static CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
    
    public static void main(String[] args)
    {
@@ -39,64 +43,82 @@ public class phase3
       Hand compHand = highCardGame.getHand(0);
       Hand humanHand = highCardGame.getHand(1);
       
-      
-      CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+       
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      
-      // CREATE LABELS ----------------------------------------------------
-      JLabel lblComputerHand = new JLabel("Computer Hand", JLabel.CENTER);
-      JLabel lblHumanHand = new JLabel("Human Hand", JLabel.CENTER);
-
-      // and two random cards in the play region (simulating a computer/hum ply)
-      Card cardA, cardB;
-      cardA = compHand.playCard(NUM_CARDS_PER_HAND -1);
-      cardB = humanHand.playCard(NUM_CARDS_PER_HAND -1);
-      JLabel labA = new JLabel(GUICard.getIcon(cardA));
-      JLabel labB = new JLabel(GUICard.getIcon(cardB));
-
-      myCardTable.pnlPlayArea.add(labA);
-      myCardTable.pnlPlayArea.add(labB);
-
-      // ADD LABELS TO PANELS -----------------------------------------
-      myCardTable.pnlPlayArea.add(lblComputerHand);
-      myCardTable.pnlPlayArea.add(lblHumanHand);
 
       // Deal Cards to "Hands"
       prepHandForDisplay(compHand, humanHand);
       for (int i = 0; i < compHand.getNumCards(); i++)
       {
          myCardTable.pnlComputerHand.add(computerLabels[i]);
-         myCardTable.pnlHumanHand.add(humanLabels[i]);
+         myCardTable.pnlHumanHand.add(humanButtons[i]);
       }
       // show everything to the user
       myCardTable.setVisible(true);
    }
-
+   
+   static void playCards(Card compCard, Card humanCard)
+   {
+      // CREATE LABELS ----------------------------------------------------
+      JLabel lblComputerHand = new JLabel("Computer Hand", JLabel.CENTER);
+      JLabel lblHumanHand = new JLabel("Human Hand", JLabel.CENTER);
+      JLabel labA = new JLabel(GUICard.getIcon(compCard));
+      JLabel labB = new JLabel(GUICard.getIcon(humanCard));
+   
+      myCardTable.pnlPlayArea.add(labA);
+      myCardTable.pnlPlayArea.add(labB);
+     
+      // ADD LABELS TO PANELS -----------------------------------------
+      myCardTable.pnlPlayArea.add(lblComputerHand);
+      myCardTable.pnlPlayArea.add(lblHumanHand);
+   }
+   
    static void prepHandForDisplay(Hand compHand, Hand humanHand)
    {
       // clear old labels
+      int k; // used to iterate the real cards.
       for (int i = 0; i < compHand.getNumCards(); i++)
       {
          computerLabels[i] = null;
-         humanLabels[i] = null;
+         humanButtons[i] = null;
       }
       
       // add new labels for comp hand
-      for (int i = 0; i < compHand.getNumCards(); i++)
+      k = 0;
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
-         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+         Card nextCard;
+         nextCard = compHand.inspectCard(i);
+         if (nextCard != null)
+         {
+            computerLabels[k] = new JLabel(GUICard.getBackCardIcon());
+            k++;
+         }
       }
       
-      for (int i = 0; i < humanHand.getNumCards(); i++)
+      k = 0;// reset for next round
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
-         JLabel lab;
+         JButton button;
          Card nextCard;
          nextCard = humanHand.inspectCard(i);
-         lab = new JLabel(GUICard.getIcon(nextCard));
-         humanLabels[i] = lab;
+         if (nextCard != null)
+         {
+            
+            button = new JButton("", GUICard.getIcon(nextCard));
+            humanButtons[k] = button;
+            k++;
+         }
       }
+   }
+   
+   public void actionPerformed(ActionEvent e) 
+   {
+      int foo;
+      //   numClicks++;
+      // text.setText("Button Clicked " + numClicks + " times");
    }
 }
 
