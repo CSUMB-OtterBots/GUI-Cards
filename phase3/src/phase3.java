@@ -119,6 +119,10 @@ public class phase3 implements ActionListener
          {
             computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
          }
+         else
+         {
+            System.out.println("computer hand" + i);
+         }
       }
       
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
@@ -130,9 +134,18 @@ public class phase3 implements ActionListener
             button = new JButton("", GUICard.getIcon(nextCard));
             humanButtons[i] = button;
          }
+         else
+         {
+            System.out.println("human hand" + i);
+         }
       }
    }
 
+   public void refreshScreen()
+   {
+      myCardTable.pnlHumanHand.setVisible(false);
+      myCardTable.pnlHumanHand.setVisible(true);
+   }
    public void actionPerformed(ActionEvent e)
    {
       myCardTable.pnlHumanHand.remove((JButton) e.getSource());
@@ -141,12 +154,12 @@ public class phase3 implements ActionListener
          if ((JButton) e.getSource() == humanButtons[x])
          {
             humanHand.playCard(x);
+            break;
          }
       }
       prepHandForDisplay();
       displayHands();
-      myCardTable.pnlHumanHand.setVisible(false);
-      myCardTable.pnlHumanHand.setVisible(true);
+      refreshScreen();
    }
 }
 
@@ -567,7 +580,7 @@ class Hand
     */
    public Card inspectCard(int k)
    {
-      if (numCards == 0 || k < 0 || k > numCards || myCards[k] == null)
+      if (numCards == 0 || k < 0 || myCards[k] == null)
       {
          // Creates illegal card
          return new Card('Z', Card.Suit.spades);
