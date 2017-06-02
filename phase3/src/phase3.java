@@ -17,8 +17,8 @@ import java.awt.event.*;
    
 public class phase3 implements ActionListener
 {
-   static int NUM_CARDS_PER_HAND = 7;
-   static int NUM_PLAYERS = 2;
+   static int NUM_CARDS_PER_HAND = 7; // number of cards in hand to be played
+   static int NUM_PLAYERS = 2; // max number of players
    static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
@@ -26,11 +26,11 @@ public class phase3 implements ActionListener
 
    static JButton[] humanButtons = new JButton[NUM_CARDS_PER_HAND];
    static CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
-   static Hand compHand;
-   static Hand humanHand;
+   static Hand compHand; // computer's hand
+   static Hand humanHand; // human's hand
    
-   static Card lastComputerCard = null;
-   static Card lastHumanCard = null;
+   static Card lastComputerCard = null; // clears computer hand
+   static Card lastHumanCard = null; // clears human hand
    
    static int humanScore = 0;
    static int compScore = 0;
@@ -75,6 +75,7 @@ public class phase3 implements ActionListener
       myCardTable.setVisible(true);
    }
 
+   // method that displays hands to user
    static void displayHands()
    {
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
@@ -91,6 +92,7 @@ public class phase3 implements ActionListener
       }
    }
    
+   // method plays the cards and displays appropriate responses
    static void playCards(boolean over)
    {
       // CREATE LABELS ----------------------------------------------------
@@ -102,7 +104,7 @@ public class phase3 implements ActionListener
       JLabel labA = new JLabel(GUICard.getIcon(lastComputerCard));
       JLabel labB = new JLabel(GUICard.getIcon(lastHumanCard));
 
-      // remove all the old stuff.
+      // remove all the old stuff
       myCardTable.pnlPlayArea.removeAll();
       myCardTable.repaint();
 
@@ -133,10 +135,11 @@ public class phase3 implements ActionListener
       }
    }
 
+   // method clears the old labels to display the new hands
    static void prepHandForDisplay()
    {
       Card nextCard;
-      // clear old labels
+
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
          if (computerLabels[i] != null)
@@ -161,6 +164,7 @@ public class phase3 implements ActionListener
          }
       }
       
+      // add new labels for human hand
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
          JButton button;
@@ -173,6 +177,7 @@ public class phase3 implements ActionListener
       }
    }
    
+   // method takes the rank of each card played and determines winner
    void scoreRound()
    {
       int comp  = Card.rank(lastComputerCard.getValue());
@@ -191,6 +196,7 @@ public class phase3 implements ActionListener
       // no pts for draw
    }
    
+   // method plays the computer hand and compares it to human hand
    void computerPlay()
    {
       int playCard = -1;
@@ -223,12 +229,14 @@ public class phase3 implements ActionListener
       scoreRound();
    }
 
+   // method resets the screen and clears the hands
    void refreshScreen()
    {
       myCardTable.pnlHumanHand.setVisible(false);
       myCardTable.pnlHumanHand.setVisible(true);
    }
    
+   // action method when user presses play
    public void actionPerformed(ActionEvent e)
    {
       myCardTable.pnlHumanHand.remove((JButton) e.getSource());
@@ -248,6 +256,7 @@ public class phase3 implements ActionListener
    }
 }
 
+// this class embodies the JPanels and Layout(s) needed, this is where all the cards and controls will be placed
 class CardTable extends JFrame
 {
    public static final long serialVersionUID = 12;
@@ -259,6 +268,7 @@ class CardTable extends JFrame
 
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
 
+   // creates the play area for the game
    CardTable(String title, int numCardsPerHand, int numPlayers)
    {
       this.numPlayers = numPlayers;
@@ -279,7 +289,8 @@ class CardTable extends JFrame
       setPanelVars(pnlHumanHand, "Human Hand");
       add(pnlHumanHand, BorderLayout.SOUTH);
    }
-
+   
+   // sets up the panel so that the text is within the border
    private void setPanelVars(JPanel panel, String name)
    {
       TitledBorder border = new TitledBorder(name);
@@ -293,6 +304,7 @@ class CardTable extends JFrame
    }
 }
 
+// manages the reading and building of the card image Icons
 class GUICard
 {
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K +
@@ -300,7 +312,8 @@ class GUICard
    private static Icon iconBack;
    static boolean iconsLoaded = false;
 
-   static String turnIntIntoCardValue(int k) // Helper Method
+   // helper method takes in an int and returns the String value of that card
+   static String turnIntIntoCardValue(int k) 
    {
       String returnValue = null;
       String[] cardValues =
@@ -317,7 +330,8 @@ class GUICard
       return returnValue;
    }
 
-   static String turnIntIntoCardSuit(int j) // Helper Method
+   // helper method takes in an int and returns the String suit of that card
+   static String turnIntIntoCardSuit(int j)
    {
       String returnSuit = null;
       String[] cardSuits =
@@ -334,6 +348,7 @@ class GUICard
       return returnSuit;
    }
 
+   // stores the Icons in a 2-D array
    static void loadCardIcons()
    {
       // check if array is loaded... if not load it
@@ -353,6 +368,7 @@ class GUICard
       }
    }
 
+   // returns the value of card as an integer
    static private int valueAsInt(Card card)
    {
       char val = card.getValue();
@@ -366,12 +382,14 @@ class GUICard
       return -1;
    }
 
+   // returns the suit of the card as an integer
    static private int suitAsInt(Card card)
    {
       return card.getSuit().ordinal(); // returns suit index
 
    }
 
+   // takes a Card object from the client, and returns the Icon for that card
    static public Icon getIcon(Card card)
    {
       GUICard.loadCardIcons();
@@ -381,6 +399,7 @@ class GUICard
       return iconCards[val][suit];
    }
 
+   // another method that returns the card-back image, simpler than getIcon()
    static public Icon getBackCardIcon()
    {
       GUICard.loadCardIcons();
@@ -452,7 +471,8 @@ class Card
       }
    }
 
-   static void arraySort(Card[] cards, int arraySize) // Utilizes bubble sort
+   // sorts card into array utilizing bubble sort
+   static void arraySort(Card[] cards, int arraySize) 
    {
       int numSwaps;
 
@@ -474,7 +494,8 @@ class Card
                                // is sorted
    }
 
-   public static int rank(char value) // Helper method for arraySort
+   // helper method for arraySort
+   public static int rank(char value)
    {
       for (int i = 0; i < valueRanks.length; i++)
       {
@@ -486,19 +507,19 @@ class Card
       return -1;
    }
 
-   // Simple Accessor for value
+   // simple Accessor for value
    public char getValue()
    {
       return value;
    }
 
-   // Simple Accessor for suit
+   // simple Accessor for suit
    public Suit getSuit()
    {
       return suit;
    }
 
-   // Simple Accessor for errorFlag
+   // simple Accessor for errorFlag
    public boolean getErrorFlag()
    {
       return errorFlag;
@@ -575,15 +596,13 @@ class Hand
       myCards = new Card[MAX_CARDS];
    }
 
-   /*
-    * This method clears the hand (removes all cards)
-    */
-
+   // calls the arraySort method
    public void sort()
    {
       Card.arraySort(myCards, numCards);
    }
-
+  
+   // This method clears the hand (removes all cards)
    public void resetHand()
    {
       for (int i = 0; i < numCards; i++)
@@ -652,7 +671,7 @@ class Hand
       return hand;
    }
 
-   // Simple Accessor for the numCard variable.
+   // simple Accessor for the numCard variable
    public int getNumCards()
    {
       return numCards;
@@ -758,13 +777,14 @@ class Deck
       topCard = cards.length - 1;
    }
 
+   // this method determines whether it is possible to add another card to deck
    public boolean addCard(Card card)
    {
       int copies = 0;
       int length = 0;
 
-      for (int i = 0; i < cards.length; i++) // Check deck for another copy of
-                                             // card
+      // check deck for another copy of card
+      for (int i = 0; i < cards.length; i++) 
       {
          if (cards[i].getSuit() == card.getSuit() && cards[i].getValue() == card.getValue())
          {
@@ -772,7 +792,7 @@ class Deck
          }
       }
 
-      if (copies < NUM_DECKS) // Check if too many cards in deck
+      if (copies < NUM_DECKS) // check if too many cards in deck
       {
          length = cards.length;
          cards[length] = card;
@@ -788,14 +808,14 @@ class Deck
       return cards.length;
    }
 
+   // puts all of the cards in the deck back into the right order according to their values
    public void sort()
    {
       Card.arraySort(cards, topCard + 1);
    }
 
-   /*
-    * This method shuffles the decks.
-    */
+   
+   // method shuffles the decks.
    public void shuffle()
    {
       int index;
@@ -810,12 +830,13 @@ class Deck
       }
    }
 
-   // Simple accessor for topCard
+   // simple accessor for topCard
    public int topCardAccessor()
    {
       return topCard;
    }
 
+   // removes a specific card from deck
    public boolean removeCard(Card card)
    {
       int index = -1;
@@ -900,9 +921,10 @@ class Deck
 }
 
 // class CardGameFramework ----------------------------------------------------
+// this class uses an already created class to deal cards for display from an actual deck
 class CardGameFramework
 {
-   private static final int MAX_PLAYERS = 50;
+   private static final int MAX_PLAYERS = 50; 
 
    private int numPlayers;
    private int numPacks; // # standard 52-card packs per deck
@@ -917,6 +939,7 @@ class CardGameFramework
                                       // in the game. e.g. pinochle does not
                                       // use cards 2-8 of any suit
 
+   
    public CardGameFramework(int numPacks, int numJokersPerPack, int numUnusedCardsPerPack, Card[] unusedCardsPerPack,
          int numPlayers, int numCardsPerHand)
    {
@@ -972,16 +995,19 @@ class CardGameFramework
       return hand[k];
    }
 
+   // returns card after calling dealCard()
    public Card getCardFromDeck()
    {
       return deck.dealCard();
    }
 
+   // returns numbers of card remaining in deck
    public int getNumCardsRemainingInDeck()
    {
       return deck.getNumCards();
    }
 
+   // initializes a new game
    public void newGame()
    {
       int k, j;
@@ -1006,6 +1032,7 @@ class CardGameFramework
       deck.shuffle();
    }
 
+   // deal method that checks if there are enough cards
    public boolean deal()
    {
       // returns false if not enough cards, but deals what it can
@@ -1032,6 +1059,7 @@ class CardGameFramework
       return enoughCards;
    }
 
+   // sorts the hands according to number of players
    void sortHands()
    {
       int k;
@@ -1040,6 +1068,7 @@ class CardGameFramework
          hand[k].sort();
    }
 
+   // plays cards, checks and return valid card
    Card playCard(int playerIndex, int cardIndex)
    {
       // returns bad card if either argument is bad
@@ -1054,6 +1083,7 @@ class CardGameFramework
 
    }
 
+   // checks if there are enough cards to play
    boolean takeCard(int playerIndex)
    {
       // returns false if either argument is bad
