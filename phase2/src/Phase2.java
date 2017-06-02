@@ -16,14 +16,15 @@ import java.awt.GridLayout;
 
 public class Phase2
 {
-   static int NUM_CARDS_PER_HAND = 7;
-   static int NUM_PLAYERS = 2;
-   static Deck myDeck = new Deck();
-   static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
+   static int NUM_CARDS_PER_HAND = 7; // max number of cards per hand
+   static int NUM_PLAYERS = 2; // max number of players
+   static Deck myDeck = new Deck(); // creates new deck
+   static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND]; 
    static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
+   static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];  
    static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
 
+   // gets a random suit and value and returns a random card
    static Card generateRandomCard()
    {
       Random random = new Random();
@@ -32,12 +33,15 @@ public class Phase2
 
       int suitSelector, valSelector;
 
+      // selects a random int to be used to select random suit and value
       suitSelector = random.nextInt(4);
       valSelector = random.nextInt(14);
 
+      // uses the random int to select suit and value
       suit = Card.Suit.values()[suitSelector];
       val = Card.values[valSelector];
 
+      // returns new card of suit and value
       return new Card(val, suit);
    }
 
@@ -68,7 +72,7 @@ public class Phase2
       myCardTable.pnlPlayArea.add(lblComputerHand);
       myCardTable.pnlPlayArea.add(lblHumanHand);
 
-      // Deal Cards to "Hands"
+      // deala cards to "Hands"
       dealHands();
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
@@ -79,6 +83,7 @@ public class Phase2
       myCardTable.setVisible(true);
    }
 
+   // deals computer and human player hands
    static void dealHands()
    {
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
@@ -98,16 +103,18 @@ public class Phase2
    }
 }
 
+// this class embodies the JPanels and Layout(s) needed, this is where all the cards and controls will be placed
 class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2; // for now, we only allow 2 person games
 
-   private int numCardsPerHand;
-   private int numPlayers;
+   private int numCardsPerHand; // variable for number of cards per hand
+   private int numPlayers; // variable for number of players
 
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
 
+   // creates the play area for the game
    CardTable(String title, int numCardsPerHand, int numPlayers)
    {
       this.numPlayers = numPlayers;
@@ -129,6 +136,7 @@ class CardTable extends JFrame
       add(pnlHumanHand, BorderLayout.SOUTH);
    }
 
+   // sets up the panel so that the text is within the border
    private void setPanelVars(JPanel panel, String name)
    {
       TitledBorder border = new TitledBorder(name);
@@ -142,6 +150,7 @@ class CardTable extends JFrame
    }
 }
 
+//  manages the reading and building of the card image Icons
 class GUICard
 {
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K +
@@ -149,7 +158,8 @@ class GUICard
    private static Icon iconBack;
    static boolean iconsLoaded = false;
 
-   static String turnIntIntoCardValue(int k) // Helper Method
+   // helper method takes in an int and returns the String value of that card
+   static String turnIntIntoCardValue(int k) 
    {
       String returnValue = null;
       String[] cardValues =
@@ -166,7 +176,8 @@ class GUICard
       return returnValue;
    }
 
-   static String turnIntIntoCardSuit(int j) // Helper Method
+   // helper method takes in an int and returns the String suit of that card
+   static String turnIntIntoCardSuit(int j) 
    {
       String returnSuit = null;
       String[] cardSuits =
@@ -183,6 +194,7 @@ class GUICard
       return returnSuit;
    }
 
+   // stores the Icons in a 2-D array
    static void loadCardIcons()
    {
       // check if array is loaded... if not load it
@@ -202,6 +214,7 @@ class GUICard
       }
    }
 
+   // returns the value of card as an integer
    static private int valueAsInt(Card card)
    {
       char val = card.getValue();
@@ -215,12 +228,14 @@ class GUICard
       return -1;
    }
 
+   // returns the suit of the card as an integer
    static private int suitAsInt(Card card)
    {
       return card.getSuit().ordinal(); // returns suit index
 
    }
 
+   // takes a Card object from the client, and returns the Icon for that card
    static public Icon getIcon(Card card)
    {
       GUICard.loadCardIcons();
@@ -230,6 +245,7 @@ class GUICard
       return iconCards[val][suit];
    }
 
+   // another method that returns the card-back image, simpler than getIcon()
    static public Icon getBackCardIcon()
    {
       GUICard.loadCardIcons();
@@ -301,7 +317,8 @@ class Card
       }
    }
 
-   static void arraySort(Card[] cards, int arraySize) // Utilizes bubble sort
+   // sorts card into array utilizing bubble sort
+   static void arraySort(Card[] cards, int arraySize) 
    {
       int numSwaps;
 
@@ -323,7 +340,8 @@ class Card
                                // is sorted
    }
 
-   private static int rank(char value) // Helper method for arraySort
+   // helper method for arraySort
+   private static int rank(char value)
    {
       for (int i = 0; i < valueRanks.length; i++)
       {
@@ -335,19 +353,19 @@ class Card
       return -1;
    }
 
-   // Simple Accessor for value
+   // simple Accessor for value
    public char getValue()
    {
       return value;
    }
 
-   // Simple Accessor for suit
+   // simple Accessor for suit
    public Suit getSuit()
    {
       return suit;
    }
 
-   // Simple Accessor for errorFlag
+   // simple Accessor for errorFlag
    public boolean getErrorFlag()
    {
       return errorFlag;
@@ -504,7 +522,7 @@ class Hand
    // Simple Accessor for the numCard variable.
    public int getNumCards()
    {
-      return numCards;
+      return numCards; //returns number of cards remaining in deck
    }
 
    /*
@@ -532,7 +550,7 @@ class Hand
  */
 class Deck
 {
-   public final int NUM_DECKS = 6;
+   public final int NUM_DECKS = 6; // number of max decks
    public final int DECK_SIZE = 56; // the size of a deck in this game
    public final int MAX_CARDS = NUM_DECKS * DECK_SIZE; // allow a maximum of six
                                                        // packs
@@ -551,6 +569,7 @@ class Deck
       numPacks = 1;
       allocateMasterPack();
 
+      // creates a new deck of cards 
       cards = new Card[numPacks * DECK_SIZE];
       for (int i = 0; i < DECK_SIZE; i++)
       {
@@ -607,13 +626,14 @@ class Deck
       topCard = cards.length - 1;
    }
 
+   // this method determines whether it is possible to add anothr card to deck
    public boolean addCard(Card card)
    {
       int copies = 0;
       int length = 0;
 
-      for (int i = 0; i < cards.length; i++) // Check deck for another copy of
-                                             // card
+      // check deck for another copy of card  
+      for (int i = 0; i < cards.length; i++)                                   
       {
          if (cards[i].getSuit() == card.getSuit() && cards[i].getValue() == card.getValue())
          {
@@ -621,7 +641,8 @@ class Deck
          }
       }
 
-      if (copies < NUM_DECKS) // Check if too many cards in deck
+      // check if too many cards in deck
+      if (copies < NUM_DECKS) 
       {
          length = cards.length;
          cards[length] = card;
@@ -637,14 +658,14 @@ class Deck
       return cards.length;
    }
 
+   // puts all of the cards in the deck back into the right order according to their values
    public void sort()
    {
       Card.arraySort(cards, topCard + 1);
    }
 
-   /*
-    * This method shuffles the decks.
-    */
+   
+   // shuffles the decks
    public void shuffle()
    {
       int index;
@@ -659,17 +680,19 @@ class Deck
       }
    }
 
-   // Simple accessor for topCard
+   // simple accessor for topCard
    public int topCardAccessor()
    {
       return topCard;
    }
-
+   
+   // removes a specific card from deck
    public boolean removeCard(Card card)
    {
       int index = -1;
       for (int i = 0; i < cards.length; i++)
       {
+         // check if desired card is still in deck
          if (cards[i].getSuit() == card.getSuit() && cards[i].getValue() == card.getValue())
          {
             index = i;
